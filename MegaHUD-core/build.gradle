@@ -1,0 +1,76 @@
+plugins {
+    id 'java'
+    id 'io.github.patrick.remapper' version '1.4.3'
+    id 'com.gradleup.shadow' version '9.6.1'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+}
+
+dependencies {
+    implementation project(':MegaHUD-api')
+    compileOnly 'org.spigotmc:spigot:1.21.4-R0.1-SNAPSHOT:remapped-mojang'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+
+shadowJar {
+    archiveClassifier.set('')
+}
+
+tasks {
+    remap {
+        version.set("1.21.4")
+        inputTask.set(shadowJar)
+        archiveClassifier.set("remapped")
+    }
+}
+
+tasks.build {
+    dependsOn(tasks.remap)
+}
+
+
+tasks.remap {
+    doLast {
+        def exportProperty = project.findProperty('plugin.export')
+
+        if (exportProperty instanceof String && !exportProperty.trim().isEmpty()) {
+//            def finalJar = outputJar.get().asFile
+            def finalJar = layout.buildDirectory.file("libs/${project.name}-${project.version}-remapped.jar").get().asFile
+            def exportPaths = exportProperty.split(',')
+
+            exportPaths.each { rawPath ->
+                def exportPath = rawPath.trim()
+                if (!exportPath.isEmpty()) {
+                    copy {
+                        from finalJar
+                        into file(exportPath)
+                        rename '.*', "${project.name}.jar"
+                    }
+                    println "Exported plugin to: $exportPath"
+                }
+            }
+        } else {
+            println "Property 'plugin.export' not set or empty; skipping copy."
+        }
+    }
+}
+
+processResources {
+    var props = [version: version]
+    inputs.properties(props)
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}

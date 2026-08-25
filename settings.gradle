@@ -1,0 +1,3 @@
+rootProject.name = 'MegaHUD'
+include 'MegaHUD-api'
+include 'MegaHUD-core'

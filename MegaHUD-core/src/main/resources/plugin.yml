@@ -1,0 +1,5 @@
+name: MegaHUD-core
+version: '${version}'
+
+main: com.steve.megaHUD.core.MegaHUDCore
+api-version: '1.21'
