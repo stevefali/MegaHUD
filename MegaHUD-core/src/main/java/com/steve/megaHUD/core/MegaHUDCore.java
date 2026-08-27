@@ -9,7 +9,7 @@ public final class MegaHUDCore extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
 
-        getServer().getPluginManager().registerEvents(new BlockEvent(), this);
+        getServer().getPluginManager().registerEvents(new BlockEvent(this), this);
 
     }
 
