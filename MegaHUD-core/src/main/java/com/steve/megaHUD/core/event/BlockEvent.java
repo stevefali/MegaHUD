@@ -57,17 +57,17 @@ public class BlockEvent implements Listener {
 
         if (blockType == Material.BLUE_WOOL) {
 
-            FixedFormat fixedFormat = new FixedFormat(Component.literal("§dFixedFormat Text"));
-
-
             ClientboundSetObjectivePacket setObjectivePacket = new ClientboundSetObjectivePacket(objective, 0);
 
-
-            ClientboundSetDisplayObjectivePacket setDisplayObjectivePacket = new ClientboundSetDisplayObjectivePacket(
-                    DisplaySlot.SIDEBAR, objective);
+//            ClientboundSetDisplayObjectivePacket setDisplayObjectivePacket = new ClientboundSetDisplayObjectivePacket(
+//                    DisplaySlot.SIDEBAR, objective);
 
             serverPlayer.connection.send(setObjectivePacket);
-            serverPlayer.connection.send(setDisplayObjectivePacket);
+//            serverPlayer.connection.send(setDisplayObjectivePacket);
+        }
+
+        if (blockType == Material.LIGHT_BLUE_WOOL) {
+            serverPlayer.connection.send(new ClientboundSetDisplayObjectivePacket(DisplaySlot.SIDEBAR, objective));
         }
 
 
@@ -129,7 +129,7 @@ public class BlockEvent implements Listener {
         }
 
 
-        // TODO: **Note: Create the BosBar like this! (With no NamespacedKey) **
+        // TODO: **Note: Create the BossBar like this! (With no NamespacedKey) **
         if (blockType == Material.PURPLE_WOOL) {
             BossBar bossBar = Bukkit.createBossBar("§bNon-persistent", BarColor.RED, BarStyle.SOLID);
             bossBar.addPlayer(player);
@@ -163,7 +163,7 @@ public class BlockEvent implements Listener {
             if (bossBar != null) {
                 if (!bossBar.getPlayers().contains(player)) {
                     bossBar.addPlayer(player);
-                    plugin.getLogger().info("does not conatin player");
+                    plugin.getLogger().info("does not contain player");
                     bossBar.setProgress((double) 1 / 12);
                 }
                 double progress = bossBar.getProgress();
@@ -197,7 +197,6 @@ public class BlockEvent implements Listener {
                 plugin.getLogger().info("The bar is null");
             }
         }
-
 
 
     }
