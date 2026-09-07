@@ -2,7 +2,8 @@ package com.steve.megaHUD.core.hudstate;
 
 
 import com.steve.megaHUD.core.hudstate.sidebar.SidebarLine;
-import org.bukkit.boss.BossBar;
+import com.steve.megaHUD.core.implementation.HudServiceImpl;
+import net.minecraft.network.chat.Component;
 
 import java.util.Map;
 import java.util.UUID;
@@ -12,12 +13,10 @@ public class PlayerHudState {
 
     private final UUID playerId;
 
-    private static final String SIDEBAR_OBJECTIVE_NAME = "sidebar_objective";
-
     private boolean sidebarObjectiveSent = false;
+    private Component sidebarTitle;
 
     private final Map<Integer, SidebarLine> sidebarLines = new ConcurrentHashMap<>();
-
 
 
     protected PlayerHudState(UUID playerId) {
@@ -26,8 +25,7 @@ public class PlayerHudState {
 
 
     public void cleanup() {
-
-//        bossBar.removeAll();
+        HudServiceImpl.clearSidebar(playerId, this);
     }
 
     public void setSidebarObjectiveSent(boolean isSent) {
@@ -38,5 +36,12 @@ public class PlayerHudState {
         return sidebarObjectiveSent;
     }
 
+    public void setSidebarTitle(Component sidebarTitle) {
+        this.sidebarTitle = sidebarTitle;
+    }
+
+    public Component getSidebarTitle() {
+        return this.sidebarTitle;
+    }
 
 }

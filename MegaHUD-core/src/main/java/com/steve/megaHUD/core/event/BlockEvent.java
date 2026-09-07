@@ -36,6 +36,7 @@ public class BlockEvent implements Listener {
             "test",
             ObjectiveCriteria.DUMMY,
             Component.literal("§3§lMega Randomizer"),
+//            Component.empty(),
             ObjectiveCriteria.RenderType.INTEGER,
             true,
             BlankFormat.INSTANCE
@@ -112,22 +113,43 @@ public class BlockEvent implements Listener {
             serverPlayer.connection.send(multilineScorepacket);
         }
 
+        if (blockType == Material.CYAN_WOOL) {
+            serverPlayer.connection.send(new ClientboundSetScorePacket(
+                    "line_3",
+                    "test",
+                    0,
+                    Optional.of(Component.literal("§7ThirdLine: §d" + 4077)),
+                    Optional.of(BlankFormat.INSTANCE)
+            ));
+        }
+
         if (blockType == Material.ORANGE_WOOL) {
             objective.setDisplayName(Component.literal("§dChanged Objective"));
             serverPlayer.connection.send(new ClientboundSetObjectivePacket(objective, 2));
         }
 
         if (blockType == Material.RED_WOOL) {
-            ClientboundResetScorePacket resetScorePacket = new ClientboundResetScorePacket("line_0", "test");
+//            ClientboundResetScorePacket resetScorePacket = new ClientboundResetScorePacket("line_0", "test");
+//
+//            serverPlayer.connection.send(resetScorePacket);
+//            serverPlayer.connection.send(new ClientboundResetScorePacket("line_1", "test"));
+//            serverPlayer.connection.send(new ClientboundResetScorePacket("line_2", "test"));
+//            serverPlayer.connection.send(new ClientboundResetScorePacket("line_3", "test"));
 
-            serverPlayer.connection.send(resetScorePacket);
-            serverPlayer.connection.send(new ClientboundResetScorePacket("line_1", "test"));
-            serverPlayer.connection.send(new ClientboundResetScorePacket("line_2", "test"));
-            serverPlayer.connection.send(new ClientboundResetScorePacket("line_3", "test"));
+            Objective removalObjective = new Objective(
+                    new Scoreboard(),
+                    "test",
+                    ObjectiveCriteria.DUMMY,
+                    Component.empty(),
+                    ObjectiveCriteria.RenderType.INTEGER,
+                    true,
+                    BlankFormat.INSTANCE
+            );
 
-            serverPlayer.connection.send(new ClientboundSetObjectivePacket(objective, 1));
+            serverPlayer.connection.send(new ClientboundSetObjectivePacket(removalObjective, 1));
         }
 
+/*
 
         // TODO: **Note: Create the BossBar like this! (With no NamespacedKey) **
         if (blockType == Material.PURPLE_WOOL) {
@@ -197,7 +219,7 @@ public class BlockEvent implements Listener {
                 plugin.getLogger().info("The bar is null");
             }
         }
-
+*/
 
     }
 
