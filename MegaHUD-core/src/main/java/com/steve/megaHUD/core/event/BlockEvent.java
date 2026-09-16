@@ -1,5 +1,6 @@
 package com.steve.megaHUD.core.event;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.numbers.*;
@@ -9,13 +10,9 @@ import net.minecraft.world.scores.DisplaySlot;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
 import org.bukkit.craftbukkit.v1_21_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_21_R3.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,7 +20,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Optional;
-import java.util.UUID;
+
 
 
 public class BlockEvent implements Listener {
@@ -79,10 +76,16 @@ public class BlockEvent implements Listener {
                     3,
                     Optional.of(Component.literal("§aScore Display")),
 //                    Optional.of(new FixedFormat(Component.literal("§eScoreFixedFormatText")))
-                    Optional.of(new FixedFormat(Component.literal("§6Steve")))
+//                    Optional.of(new FixedFormat(Component.literal("§6Steve")))
+//                    Optional.of(new FixedFormat(Component.literal("§6§l4077")))
+                    Optional.of(
+//                            Style.EMPTY
+//                            StyledFormat.SIDEBAR_DEFAULT
+                            StyledFormat.NO_STYLE
+                    )
             );
 
-            Style testStyle = Style.EMPTY.withBold(true);
+            Style testStyle = Style.EMPTY.withBold(true).withColor(ChatFormatting.YELLOW);
             ClientboundSetScorePacket styledScorePacket = new ClientboundSetScorePacket(
                     "line_1",
                     "test",
@@ -107,10 +110,73 @@ public class BlockEvent implements Listener {
                     Optional.of(BlankFormat.INSTANCE)
             );
 
+            ClientboundSetScorePacket convertedBlankLine = new ClientboundSetScorePacket(
+                    "line_4",
+                    "test",
+                    0,
+                    Optional.of(CraftChatMessage.fromString("")[0]),
+                    Optional.of(BlankFormat.INSTANCE)
+            );
+            ClientboundSetScorePacket convertedBlankLineTwo = new ClientboundSetScorePacket(
+                    "line_5",
+                    "test",
+                    0,
+                    Optional.of(Component.literal("")),
+                    Optional.of(BlankFormat.INSTANCE)
+            );
+
+            ClientboundSetScorePacket convertedTextLine = new ClientboundSetScorePacket(
+                    "line_6",
+                    "test",
+                    0,
+                    Optional.of(Component.literal("§aConvertedTextLine")),
+                    Optional.of(new FixedFormat(Component.literal("§7§lSomeText")))
+            );
+
+            ClientboundSetScorePacket startingWithA = new ClientboundSetScorePacket(
+                    "line_7",
+                    "test",
+                    0,
+                    Optional.of(Component.literal("99AAAAAAAA")),
+                    Optional.of(BlankFormat.INSTANCE)
+            );
+
+            ClientboundSetScorePacket startingWithZ = new ClientboundSetScorePacket(
+                    "line_8",
+                    "test",
+                    0,
+                    Optional.of(Component.literal("11ZZZZZZZZ")),
+                    Optional.of(BlankFormat.INSTANCE)
+            );
+
+            ClientboundSetScorePacket startingWithD = new ClientboundSetScorePacket(
+                    "line_9",
+                    "test",
+                    999999999,
+                    Optional.of(Component.literal("33DDDDDDDD")),
+                    Optional.of(BlankFormat.INSTANCE)
+            );
+
+            ClientboundSetScorePacket rightAlignedText = new ClientboundSetScorePacket(
+                    "line_10",
+                    "test",
+                    0,
+                    Optional.of(Component.literal("")),
+//                    Optional.of(new FixedFormat(Component.literal("§b99999Right-aligned Text")))
+                    Optional.of(new FixedFormat(Component.literal("9999999")))
+            );
+
             serverPlayer.connection.send(setScorePacket);
             serverPlayer.connection.send(styledScorePacket);
             serverPlayer.connection.send(blankLinePacket);
             serverPlayer.connection.send(multilineScorepacket);
+            serverPlayer.connection.send(convertedBlankLine);
+            serverPlayer.connection.send(convertedBlankLineTwo);
+            serverPlayer.connection.send(convertedTextLine);
+            serverPlayer.connection.send(rightAlignedText);
+            serverPlayer.connection.send(startingWithA);
+            serverPlayer.connection.send(startingWithZ);
+            serverPlayer.connection.send(startingWithD);
         }
 
         if (blockType == Material.CYAN_WOOL) {
