@@ -40,8 +40,20 @@ public class HudServiceImpl implements MegaHudService {
 
 
     @Override
-    public void clearAll() {
-        hudStateManager.clear();
+    public void removeAllSidebarLines(UUID playerId) {
+        ServerPlayer serverPlayer = getServerPlayer(playerId);
+        if (serverPlayer != null) {
+            PlayerHudState playerHudState = hudStateManager.getPlayerHudState(playerId);
+            if (playerHudState != null) {
+                for (Integer lineIndex : playerHudState.getSidebarLineIndices()) {
+                    serverPlayer.connection.send(new ClientboundResetScorePacket(
+                            getIndexString(lineIndex),
+                            SIDEBAR_OBJECTIVE_NAME
+                    ));
+                }
+                playerHudState.clearSidebarLineIndices();
+            }
+        }
     }
 
     @Override

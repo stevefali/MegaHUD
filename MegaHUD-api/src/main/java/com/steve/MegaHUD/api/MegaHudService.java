@@ -6,9 +6,11 @@ import java.util.UUID;
 public interface MegaHudService {
 
     /**
-     * Remove and cleanup all MegaHUD elements and unregister all players.
+     * Remove all Sidebar lines for the given player.
+     *
+     * @param playerId The unique UUID of the player.
      */
-    void clearAll();
+    void removeAllSidebarLines(UUID playerId);
 
     /**
      * Create a sidebar or update the title of an existing one.
