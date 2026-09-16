@@ -28,7 +28,9 @@ public final class MegaHUDCore extends JavaPlugin {
             hudStateManager.registerPlayer(player.getUniqueId());
         }
 
-        Bukkit.getPluginManager().callEvent(new MegaHudServiceReadyEvent());
+        Bukkit.getScheduler().runTask(this, () -> {
+            Bukkit.getPluginManager().callEvent(new MegaHudServiceReadyEvent());
+        });
     }
 
     @Override
