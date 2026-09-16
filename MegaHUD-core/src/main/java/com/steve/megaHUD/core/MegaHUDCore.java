@@ -1,7 +1,8 @@
 package com.steve.megaHUD.core;
 
 import com.steve.MegaHUD.api.MegaHudService;
-import com.steve.megaHUD.core.event.BlockEvent;
+import com.steve.MegaHUD.api.MegaHudServiceReadyEvent;
+import com.steve.megaHUD.core.event.PlayerEvents;
 import com.steve.megaHUD.core.hudstate.HudStateManager;
 import com.steve.megaHUD.core.implementation.HudServiceImpl;
 import org.bukkit.Bukkit;
@@ -21,12 +22,13 @@ public final class MegaHUDCore extends JavaPlugin {
         HudServiceImpl hudServiceImpl = new HudServiceImpl(hudStateManager);
         Bukkit.getServicesManager().register(MegaHudService.class, hudServiceImpl, this, ServicePriority.Normal);
 
-        getServer().getPluginManager().registerEvents(new BlockEvent(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerEvents(hudStateManager), this);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            hudServiceImpl.registerPlayer(player.getUniqueId());
+            hudStateManager.registerPlayer(player.getUniqueId());
         }
 
+        Bukkit.getPluginManager().callEvent(new MegaHudServiceReadyEvent());
     }
 
     @Override
@@ -36,7 +38,6 @@ public final class MegaHUDCore extends JavaPlugin {
         hudStateManager.clear();
 
         HandlerList.unregisterAll(this);
-
 
         Bukkit.getServicesManager().unregisterAll(this);
     }

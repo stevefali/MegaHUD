@@ -1,22 +1,19 @@
 package com.steve.megaHUD.core.hudstate;
 
 
-import com.steve.megaHUD.core.hudstate.sidebar.SidebarLine;
 import com.steve.megaHUD.core.implementation.HudServiceImpl;
-import net.minecraft.network.chat.Component;
 
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerHudState {
 
     private final UUID playerId;
 
     private boolean sidebarObjectiveSent = false;
-    private Component sidebarTitle;
 
-    private final Map<Integer, SidebarLine> sidebarLines = new ConcurrentHashMap<>();
+    private Set<Integer> sidebarLineIndices = new HashSet<>();
 
 
     protected PlayerHudState(UUID playerId) {
@@ -26,6 +23,7 @@ public class PlayerHudState {
 
     public void cleanup() {
         HudServiceImpl.clearSidebar(playerId, this);
+        sidebarLineIndices.clear();
     }
 
     public void setSidebarObjectiveSent(boolean isSent) {
@@ -36,12 +34,24 @@ public class PlayerHudState {
         return sidebarObjectiveSent;
     }
 
-    public void setSidebarTitle(Component sidebarTitle) {
-        this.sidebarTitle = sidebarTitle;
+    public Set<Integer> getSidebarLineIndices() {
+        return sidebarLineIndices;
     }
 
-    public Component getSidebarTitle() {
-        return this.sidebarTitle;
+    public void setAllSidebarLineIndices(Set<Integer> allLines) {
+        this.sidebarLineIndices = allLines;
+    }
+
+    public void setSidebarLineIndex(int index) {
+        this.sidebarLineIndices.add(index);
+    }
+
+    public void removeSidebarLineIndex(int index) {
+        sidebarLineIndices.remove(index);
+    }
+
+    public void clearSidebarLineIndices() {
+        sidebarLineIndices.clear();
     }
 
 }
