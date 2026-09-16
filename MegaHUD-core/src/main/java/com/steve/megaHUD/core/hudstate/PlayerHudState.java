@@ -13,7 +13,7 @@ public class PlayerHudState {
 
     private boolean sidebarObjectiveSent = false;
 
-    private Set<Integer> sidebarLineIndices = new HashSet<>();
+    private final Set<Integer> sidebarLineIndices = new HashSet<>();
 
 
     protected PlayerHudState(UUID playerId) {
@@ -39,7 +39,8 @@ public class PlayerHudState {
     }
 
     public void setAllSidebarLineIndices(Set<Integer> allLines) {
-        this.sidebarLineIndices = allLines;
+        this.sidebarLineIndices.clear();
+        this.sidebarLineIndices.addAll(allLines);
     }
 
     public void setSidebarLineIndex(int index) {
