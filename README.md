@@ -1,6 +1,6 @@
 # MegaHUD
 
-## A HUD Plugin + API for my Mega Randomizer Server Spigot Server
+## A HUD Plugin + API for my Mega Randomizer Spigot Server
 
 ### I plan to write a proper README later, but for now, I have pasted in my project overview notes:
 
